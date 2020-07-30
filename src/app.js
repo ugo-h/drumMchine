@@ -11,7 +11,8 @@ const btnKik = document.getElementById('play-kik');
 const audioCtx = new AudioContext();
 const hatSample = new Sample(audioCtx, hat);
 const kikSample = new Sample(audioCtx, kik);
-
+hatSample.loadSample();
+kikSample.loadSample();
 // btnMetronome.addEventListener('click', metronomeHandler)
 // btnHat.addEventListener('click', () => playHandler(hatSample));
 // btnKik.addEventListener('click', () => playHandler(kikSample));
