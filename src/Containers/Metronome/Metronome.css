@@ -1,0 +1,7 @@
+.Metronome {
+    padding: 3rem;
+    border: #ccc solid  1px;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+    width: 80%;
+    max-width: 400px;
+}

@@ -25,4 +25,5 @@ kikSample.loadSample();
 // };
 
 
-const m1 = new Metronome(audioCtx, [kikSample, hatSample])
+
+// const m1 = new Metronome(audioCtx, [kikSample, hatSample])
