@@ -6,11 +6,12 @@ class Metronome extends Component {
         super(props);
         this.state = {
             tempo: 60,
+            currentNote: 0,
+            isRunning: false
         }
         this.noteTime = (60 / this.tempo) / 2;
         this.samples = props.samples;//change samples array to object
         this.ctx = props.audioCtx;
-        this.currentNote = 0;
         this.nextNoteTime = 0;
         this.scheduleAheadTime = 0.1;
         this.lookahead = 25.0;
@@ -25,11 +26,12 @@ class Metronome extends Component {
         console.log('begin', this.ctx.state)
         if(this.ctx.state === 'running') {
             this.ctx.suspend();
+            this.setState({isRunning:false})
             window.clearTimeout(this.timerID);
             console.log('timer cleared')
             return
         }
-        
+        this.setState({isRunning:true})
         console.log('run')
         this.ctx.resume();
         this.scheduler();
@@ -38,7 +40,7 @@ class Metronome extends Component {
 
     scheduler() {//schedules notes in a loop for specific timing
         while (this.nextNoteTime < this.ctx.currentTime + this.scheduleAheadTime) {
-            this.scheduleNote(this.currentNote, this.nextNoteTime);
+            this.scheduleNote(this.state.currentNote, this.nextNoteTime);
             this.nextNote();
         }
         this.timerID = window.setTimeout(this.scheduler.bind(this), this.lookahead);
@@ -53,11 +55,12 @@ class Metronome extends Component {
         
         const secondsPerBeat = 60.0 / this.state.tempo;
         this.nextNoteTime +=  secondsPerBeat;
-        this.currentNote++;
-        if(this.currentNote == 4) {//when 4 bars pased
-            this.currentNote = 0;
+        let currentNote = this.state.currentNote;
+        currentNote++;
+        if(currentNote == 4) {//when 4 bars pased
+            currentNote = 0;
         }
-        
+        this.setState({currentNote})
     }
 
     tempoChangeHandler (event) {
@@ -66,11 +69,20 @@ class Metronome extends Component {
     }
 
     render() {
+        const pads = new Array(4).fill(null).map((el, i) => {
+            if(i === 3) i=-1
+            const active = i+1 === this.state.currentNote;
+            return (<input disabled={active} type="checkbox" key={i}></input>)
+        })
+        
         return(
             <div className="Metronome">
-                <p>Tempo: {this.state.tempo}</p>
-                <button onClick={this.metronomeHandler.bind(this)}>Start</button>
-                <input onInput={this.tempoChangeHandler.bind(this)} type="range" min="60" max="180"></input>
+                <div className="Metronome__head">
+                    <button onClick={this.metronomeHandler.bind(this)}>{this.state.isRunning? "STOP": "START"}</button>
+                    <input onInput={this.tempoChangeHandler.bind(this)} type="range" min="60" max="180"></input>
+                    <p>{this.state.tempo} bpm</p>
+                </div>
+                <div className="Pads">{pads}</div>
             </div>
         )
     }

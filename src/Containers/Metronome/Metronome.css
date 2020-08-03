@@ -1,7 +1,33 @@
 .Metronome {
-    padding: 3rem;
-    border: #ccc solid  1px;
-    box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+    display:flex;
+    flex-flow: column;
+    
+    padding: 1rem 3rem;
+    border: rgb(235, 235, 235) solid  1px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     width: 80%;
-    max-width: 400px;
+    max-width: 300px;
+}
+.Metronome button {
+    padding: 1rem;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background: blue;
+    min-width: 6rem;
+
+}
+.Metronome__head {
+    margin-top: 1rem;
+    display:flex;
+    align-items:center;
+    justify-content: space-evenly;
+}
+.Pads {
+    align-self: center;
+    padding:1rem 0;
+}
+.Pads input:disabled {
+    background-color: orange;
+   
 }
