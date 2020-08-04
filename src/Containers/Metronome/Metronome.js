@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './Metronome.css';
+import Pads from './Pads/Pads';
+import PlayIcon from '../../images/play.svg';
+import PauseIcon from '../../images/pause.svg';
 
 class Metronome extends Component {
     constructor(props) {
@@ -7,32 +10,32 @@ class Metronome extends Component {
         this.state = {
             tempo: 60,
             currentNote: 0,
+            beatsPerBar: 4,
             isRunning: false
         }
         this.noteTime = (60 / this.tempo) / 2;
         this.samples = props.samples;//change samples array to object
         this.ctx = props.audioCtx;
+        this.ctx.suspend();
         this.nextNoteTime = 0;
         this.scheduleAheadTime = 0.1;
         this.lookahead = 25.0;
+        this.checkedNotesArr = new Array(this.state.beatsPerBar).fill(false)
     }
 
     componentDidMount() {
-        //load all samples
+        //load all samplesk
         this.samples.forEach((sample) =>  sample.loadSample())
     }
 
     metronomeHandler() {
-        console.log('begin', this.ctx.state)
         if(this.ctx.state === 'running') {
             this.ctx.suspend();
             this.setState({isRunning:false})
             window.clearTimeout(this.timerID);
-            console.log('timer cleared')
             return
         }
         this.setState({isRunning:true})
-        console.log('run')
         this.ctx.resume();
         this.scheduler();
         return;
@@ -47,7 +50,8 @@ class Metronome extends Component {
     }
     scheduleNote(beatNumber, time) {
         this.samples[0].playSample(time);
-        if(beatNumber % 4 === 0) {
+        console.log(this.checkedNotesArr[beatNumber])
+        if(this.checkedNotesArr[beatNumber]) {
             this.samples[1].playSample(time)
         }
     }
@@ -57,7 +61,7 @@ class Metronome extends Component {
         this.nextNoteTime +=  secondsPerBeat;
         let currentNote = this.state.currentNote;
         currentNote++;
-        if(currentNote == 4) {//when 4 bars pased
+        if(currentNote == this.state.beatsPerBar) {//when chosen amount of bars pased
             currentNote = 0;
         }
         this.setState({currentNote})
@@ -68,21 +72,46 @@ class Metronome extends Component {
         this.setState({ tempo })
     }
 
+    incrBeatsPerBarHandler() {
+        let { beatsPerBar } = this.state;
+        if(beatsPerBar > 8) {
+            return
+        }
+        beatsPerBar++;
+        this.setState({beatsPerBar});
+    }
+
+    dcrBeatsPerBarHandler(){
+        let { beatsPerBar } = this.state;
+        if(beatsPerBar <= 2) {
+            return
+        }
+        beatsPerBar--;
+        this.setState({beatsPerBar});
+    }
+
+    checkHandler() {
+        const id = event.target.id
+        this.checkedNotesArr[id] = event.target.checked;
+    }
+
     render() {
-        const pads = new Array(4).fill(null).map((el, i) => {
-            if(i === 3) i=-1
-            const active = i+1 === this.state.currentNote;
-            return (<input disabled={active} type="checkbox" key={i}></input>)
-        })
-        
         return(
             <div className="Metronome">
                 <div className="Metronome__head">
-                    <button onClick={this.metronomeHandler.bind(this)}>{this.state.isRunning? "STOP": "START"}</button>
+                    <button onClick={this.metronomeHandler.bind(this)}>
+                        {this.state.isRunning? <PauseIcon/>:<PlayIcon/>}
+                    </button>
                     <input onInput={this.tempoChangeHandler.bind(this)} type="range" min="60" max="180"></input>
                     <p>{this.state.tempo} bpm</p>
                 </div>
-                <div className="Pads">{pads}</div>
+                <Pads 
+                    currentNote = {this.state.currentNote}
+                    beatsPerBar={this.state.beatsPerBar}
+                    checkHandler = {this.checkHandler.bind(this)}
+                    incrBeatsPerBarHandler={this.incrBeatsPerBarHandler.bind(this)}
+                    dcrBeatsPerBarHandler={this.dcrBeatsPerBarHandler.bind(this)}
+                />
             </div>
         )
     }

@@ -5,31 +5,40 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode:"development",
     entry: "./src/index.js",
+    name:"index",
     devServer:{
-        contentBase: "./dist"
+        contentBase: "./dist",
     },
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "index.js",
-        publicPath: "assets/scripts",
     },
     module: {
         rules: [ 
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['env', 'react']
-                }
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['env', 'react'],
+                        }
+                    }
+                ]
             },
             {
                 test: /\.(wav)$/i,
                 exclude: /node_modules/,
                 loader: "file-loader",
                 options: {
-                    name: "images/[name].[ext]"
+                    name: "/assets/samples/[name].[ext]"
                   }
+            },
+            {
+                test: /\.(svg)$/i,
+                loader: "@svgr/webpack",
+                
             },
             {
                 test: /\.(css)$/,
