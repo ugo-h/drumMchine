@@ -1,19 +1,8 @@
 .PadsControls {
     display: flex;
     justify-content: flex-end;
+    align-self: flex-end;
 }
 .PadsControls button {
-    margin:0 0.2rem;
-    font-size:  1.2rem;
-    background: var(--main-color);
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    border-radius:80%;
-    width:1rem;
-    height:1rem;
-    
-}
-.PadsControls button:hover{
-    background: var(--main-color-faded);
+    background: var(--secondary-color);
 }

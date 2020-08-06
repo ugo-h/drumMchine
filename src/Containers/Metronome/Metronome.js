@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Metronome.css';
+import MetronomeHeader from './MetromoneHeader/MetronomeHeader'
 import PadsPannel from './PadsPannel/PadsPannel';
-import PlayIcon from '../../images/play.svg';
-import PauseIcon from '../../images/pause.svg';
+
 
 class Metronome extends Component {
     constructor(props) {
@@ -76,9 +76,14 @@ class Metronome extends Component {
     }
 
     tempoChangeHandler (event) {
-        const tempo = event.currentTarget.value;
+        const tempo = parseInt(event.currentTarget.value);
         this.setState({ tempo })
     }
+
+    tempoChangeByHandler(amount) {
+        const tempo = this.state.tempo + amount;
+        this.setState({ tempo })
+    }   
 
     incrBeatsPerBarHandler() {
         let { beatsPerBar } = this.state;
@@ -107,13 +112,13 @@ class Metronome extends Component {
     render() {
         return(
             <div className="Metronome">
-                <div className="Metronome__head">
-                    <button onClick={this.metronomeHandler.bind(this)}>
-                        {this.state.isRunning? <PauseIcon/>:<PlayIcon/>}
-                    </button>
-                    <input defaultValue={this.state.tempo} onInput={this.tempoChangeHandler.bind(this)} type="range" min="60" max="240"></input>
-                    <p>{this.state.tempo} bpm</p>
-                </div>
+                <MetronomeHeader
+                    tempoChangeByHandler={this.tempoChangeByHandler.bind(this)}
+                    metronomeHandler={this.metronomeHandler.bind(this)}
+                    tempo={this.state.tempo}
+                    tempoChangeHandler={this.tempoChangeHandler.bind(this)}
+                    isRunning={this.state.isRunning}
+                />
                 <PadsPannel
                     samples={this.samples}
                     currentNote={this.state.currentNote}

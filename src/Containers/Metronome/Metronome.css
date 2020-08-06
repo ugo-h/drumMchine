@@ -1,6 +1,7 @@
 :root{
     --main-color: rgb(64, 169, 255);
     --main-color-faded: rgb(146, 206, 255);
+    --secondary-color: #dfe3ee;
 }
 .Metronome {
     display:flex;
@@ -13,21 +14,13 @@
     max-width: 300px;
 }
 .Metronome button {
-    padding: 1rem;
+   
     border: none;
     cursor: pointer;
     color: white;
-    background:none;
-    width:6rem;
+  
 
 }
-.Metronome button svg{
-    fill: var(--main-color);
-}
 
-.Metronome__head {
-    margin-top: 1rem;
-    display:flex;
-    align-items:center;
-    justify-content: space-evenly;
-}
+
+

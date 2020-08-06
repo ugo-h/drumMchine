@@ -1,11 +1,12 @@
 import React from 'react';
 import './PadsControls.css';
+import MetronomeButton from '../../Button/MetronomeButton';
 
 const padsControls = (props) => {
     return (
         <div className="PadsControls">
-            <button onClick={() => props.dcrBeatsPerBarHandler()}>-</button> 
-            <button onClick={() => props.incrBeatsPerBarHandler()}>+</button>
+            <MetronomeButton buttonHandler={() => props.dcrBeatsPerBarHandler()}>-</MetronomeButton> 
+            <MetronomeButton buttonHandler={() => props.incrBeatsPerBarHandler()}>+</MetronomeButton>
         </div>
     )
 }

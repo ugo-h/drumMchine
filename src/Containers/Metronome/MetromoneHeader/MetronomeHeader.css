@@ -1,0 +1,28 @@
+.Metronome__head {
+    margin-top: 1rem;
+    display:flex;
+    flex-flow:column;
+    align-items:center;
+    justify-content: space-evenly;
+    margin-bottom:3rem;
+}
+.bpm-container{
+    color: 		var(--secondary-color);
+    font-size:3rem;
+}
+
+.PlayButton {
+    background:none;
+    width:8rem;
+    padding:1rem;
+}
+
+.PlayButton svg{
+    fill: var(--main-color);
+}
+
+.TempoControls {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
