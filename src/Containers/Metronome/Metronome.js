@@ -8,7 +8,7 @@ class Metronome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tempo: 60,
+            tempo: 120,
             currentNote: 3,
             beatsPerBar: 4,
             isRunning: false
@@ -49,11 +49,19 @@ class Metronome extends Component {
         this.timerID = window.setTimeout(this.scheduler.bind(this), this.lookahead);
     }
     scheduleNote(beatNumber, time) {
-        this.samples[0].playSample(time);
+        const osc = this.ctx.createOscillator();
+        osc.connect( this.ctx.destination );
         
-        if(this.checkedNotesArr[beatNumber]) {
-            this.samples[1].playSample(time)
+        osc.frequency.value = 440.0;
+        if (beatNumber === this.state.beatsPerBar-1 ) {   // quarter notes = medium pitch
+            osc.frequency.value = 880.0;
         }
+        osc.start( time );
+        osc.stop( time + 0.05 );
+        // this.samples[0].playSample(time);
+        // if(beatNumber === this.state.beatsPerBar-1) {
+        //     this.samples[1].playSample(time)
+        // }
     }
     nextNote() {
         
@@ -103,7 +111,7 @@ class Metronome extends Component {
                     <button onClick={this.metronomeHandler.bind(this)}>
                         {this.state.isRunning? <PauseIcon/>:<PlayIcon/>}
                     </button>
-                    <input onInput={this.tempoChangeHandler.bind(this)} type="range" min="60" max="180"></input>
+                    <input defaultValue={this.state.tempo} onInput={this.tempoChangeHandler.bind(this)} type="range" min="60" max="240"></input>
                     <p>{this.state.tempo} bpm</p>
                 </div>
                 <PadsPannel

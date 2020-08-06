@@ -4,6 +4,7 @@ import './App.css';
 import Metronome from '../../Containers/Metronome/Metronome';
 import hat from '../../audioFiles/HAT.wav';
 import kik from '../../audioFiles/KIK.wav';
+import Beep from '../../sounds/oscilator/oscilator';
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 class Sample {
