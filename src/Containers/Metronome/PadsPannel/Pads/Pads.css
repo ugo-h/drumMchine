@@ -1,0 +1,27 @@
+.Pads {
+    display:flex;
+    justify-content: space-between;
+}
+.Pads button {
+    font-size:  1.2rem;
+    background: var(--main-color);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:80%;
+    width:1rem;
+    height:1rem;
+    
+}
+.Pads button:hover{
+    background: var(--main-color-faded);
+}
+
+.Pads {
+    /* align-self: center; */
+    padding:1rem 0;
+}
+.Pads input:disabled {
+    background-color: orange;
+   
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Metronome.css';
-import Pads from './Pads/Pads';
+import PadsPannel from './PadsPannel/PadsPannel';
 import PlayIcon from '../../images/play.svg';
 import PauseIcon from '../../images/pause.svg';
 
@@ -9,7 +9,7 @@ class Metronome extends Component {
         super(props);
         this.state = {
             tempo: 60,
-            currentNote: 0,
+            currentNote: 3,
             beatsPerBar: 4,
             isRunning: false
         }
@@ -50,7 +50,7 @@ class Metronome extends Component {
     }
     scheduleNote(beatNumber, time) {
         this.samples[0].playSample(time);
-        console.log(this.checkedNotesArr[beatNumber])
+        
         if(this.checkedNotesArr[beatNumber]) {
             this.samples[1].playSample(time)
         }
@@ -61,7 +61,7 @@ class Metronome extends Component {
         this.nextNoteTime +=  secondsPerBeat;
         let currentNote = this.state.currentNote;
         currentNote++;
-        if(currentNote == this.state.beatsPerBar) {//when chosen amount of bars pased
+        if(currentNote >= this.state.beatsPerBar) {//when chosen amount of bars pased
             currentNote = 0;
         }
         this.setState({currentNote})
@@ -91,8 +91,9 @@ class Metronome extends Component {
     }
 
     checkHandler() {
-        const id = event.target.id
-        this.checkedNotesArr[id] = event.target.checked;
+        console.log("checkf")
+        let id = event.target.id
+        this.checkedNotesArr[id-1] = event.target.checked;
     }
 
     render() {
@@ -105,8 +106,9 @@ class Metronome extends Component {
                     <input onInput={this.tempoChangeHandler.bind(this)} type="range" min="60" max="180"></input>
                     <p>{this.state.tempo} bpm</p>
                 </div>
-                <Pads 
-                    currentNote = {this.state.currentNote}
+                <PadsPannel
+                    samples={this.samples}
+                    currentNote={this.state.currentNote}
                     beatsPerBar={this.state.beatsPerBar}
                     checkHandler = {this.checkHandler.bind(this)}
                     incrBeatsPerBarHandler={this.incrBeatsPerBarHandler.bind(this)}
